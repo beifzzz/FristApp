@@ -7,6 +7,8 @@
 
 import UIKit
 
+//MARK: used guard let for optional
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var label: UILabel!
