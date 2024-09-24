@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  tableView
+//  TableViewExample
 //
-//  Created by Arystan on 17.09.2024.
+//  Created by Arystan on 24.09.2024.
 //
 
 import UIKit
