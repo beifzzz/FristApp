@@ -24,8 +24,8 @@ class ViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "SecondVC" {
             if let vc = segue.destination as? SecondViewController {
-                vc.firstDate = firstDatePicker.date
-                vc.secondDate = secondDatePicker.date
+                vc.startDate = firstDatePicker.date
+                vc.endDate = secondDatePicker.date
             
             }
         }

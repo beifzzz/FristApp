@@ -14,59 +14,60 @@ class SecondViewController: UIViewController {
     @IBOutlet weak var timerDateLabel: UILabel!
     
     var timer = Timer()
-    var firstDate: Date?
-    var secondDate: Date?
-    
-    
+    var startDate: Date!
+    var endDate: Date!
+    let dateFormatter = DateFormatter()
+    var isTimerRunning = false
+    var currentDate: Date!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let startDate = firstDate, let endDate = secondDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
-            dateFormatter.timeStyle = .medium
-            
+        dateFormatter.dateFormat = "dd MMM yyyy, EEE HH:mm"
+
+        if let startDate = startDate, let endDate = endDate {
+            currentDate = startDate
+            timerDateLabel.text = dateFormatter.string(from: startDate)
             firstDateLabel.text = dateFormatter.string(from: startDate)
             secondDateLabel.text = dateFormatter.string(from: endDate)
-            
-            
+        
         }
     }
     
     @objc func countTimer() {
-        guard let endDate = secondDate else { return }
-             
-             let currentTime = Date()
-             let timeInterval = endDate.timeIntervalSince(currentTime)
-             
-             if timeInterval <= 0 {
-                 timer.invalidate()
-                 timerDateLabel.text = "Time's up!"
-             } else {
-                 let days = Int(timeInterval) / (3600 * 24)
-                 let hours = Int(timeInterval) % (3600 * 24) / 3600
-                 let minutes = Int(timeInterval) % 3600 / 60
-                 let seconds = Int(timeInterval) % 60
-                 timerDateLabel.text = String(format: "%02d:%02d:%02d:%02d", days, hours, minutes, seconds)
-             }
+        
+        if startDate >= endDate {
+            timer.invalidate()
+            return
+        }
+        startDate = startDate.addingTimeInterval(3600)
+        timerDateLabel.text = dateFormatter.string(from: startDate)
+        
     }
     
     @IBAction func startButton(_ sender: Any) {
+        
+        if isTimerRunning {
+            return
+        }
+        
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTimer), userInfo: nil, repeats: true)
+        
+        isTimerRunning = true
     }
     
     
     @IBAction func stopButton(_ sender: Any) {
         timer.invalidate()
+        isTimerRunning = false
     }
     
     
     @IBAction func restartButton(_ sender: Any) {
         timer.invalidate()
+        isTimerRunning = false
+        startDate = currentDate
+        timerDateLabel.text = dateFormatter.string(from: startDate)
     }
-    
-    
-    
-    
 }
